@@ -10,7 +10,7 @@ White = 8
 Black = 16
 
 KnightDirections = [-17, -15, -10, -6, 6, 10, 15, 17]
-KingDirections = [-8, 8, -1, 1, -7, 7, -9, 9]
+KingDirections = [-8, 8, -1, 1, -9, 7, -7, 9]
 #up down left right upLeft downLeft upRight downRight
 
 def GetPieceType(piece):

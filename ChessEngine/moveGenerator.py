@@ -11,7 +11,6 @@ class MoveGenerator:
 
         self.precomputedData = precomputedData
 
-
     def GenerateLegalMoves(self):
         self.GenerateMoves()
 
@@ -49,14 +48,10 @@ class MoveGenerator:
 
                 pieceOnTargetSquare = self.board.square[targetSquare]
 
-                if Piece.IsColor(pieceOnTargetSquare, self.opponentColor):
-                    break
+                # if Piece.IsColor(pieceOnTargetSquare, self.opponentColor):
+                #     break
 
                 self.moves.append(Move(startingSquare, targetSquare))
 
-                if Piece.IsColor(pieceOnTargetSquare, self.opponentColor):
-                    break
-
-
-    def IsExistingSquare(self, squareIndex):
-        return True if -1 < squareIndex < 64 else False
+                # if Piece.IsColor(pieceOnTargetSquare, self.opponentColor):
+                #     break
