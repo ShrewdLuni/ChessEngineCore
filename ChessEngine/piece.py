@@ -1,20 +1,22 @@
-Nothing = 0
-King = 1
-Pawn = 2
-Knight = 3
-Bishop = 4
-Rook = 5
-Queen = 6
+NOTHING = 0
+KING = 1
+PAWN = 2
+KNIGHT = 3
+BISHOP = 4
+ROOK = 5
+QUEEN = 6
 
-White = 8
-Black = 16
+WHITE = 8
+BLACK = 16
 
-KnightDirections = [-17, -15, -10, -6, 6, 10, 15, 17]
-KingDirections = [-8, 8, -1, 1, -9, 7, -7, 9]
-#up down left right upLeft downLeft upRight downRight
+KNIGHT_DIRECTIONS = [-17, -15, -10, -6, 6, 10, 15, 17]
+KING_DIRECTIONS = [-8, 8, -1, 1, -9, 7, -7, 9]
+# up down left right upLeft downLeft upRight downRight
 
-def GetPieceType(piece):
+
+def get_piece_type(piece):
     return piece & 7
 
-def IsColor(piece, color):
+
+def is_color(piece, color):
     return piece & color == color

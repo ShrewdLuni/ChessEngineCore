@@ -1,38 +1,40 @@
 import json
 
 from ChessEngine.board import Board
-from ChessEngine.moveGenerator import MoveGenerator
-from ChessEngine.precomputedMoveData import PrecomputedMoveData
+from ChessEngine.move_generator import MoveGenerator
+from ChessEngine.precomputed_move_data import PrecomputedMoveData
 
 def main():
     brd = Board()
     pmd = PrecomputedMoveData()
     mg = MoveGenerator(brd, pmd)
-    brd.FENtoBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+    brd.fen_to_board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
-    mg.GenerateLegalMoves()
-    c = 0
+    mg.generate_legal_moves()
+
+    move_count = 0
     for move in mg.moves:
-        c += 1
-        renderBoard(brd, move.startingSquare, move.targetSquare)
+        move_count += 1
+        render_board(brd, move.starting_square, move.target_square)
 
-def renderBoard(board, startingSquare, targetSquare):
-    print("Start:", startingSquare, "Target:", targetSquare)
-    line = "| "
+    print(f"Total moves generated: {move_count}")
+
+def render_board(board, starting_square, target_square):
+    print(f"Start: {starting_square}, Target: {target_square}")
     print("---------------------------")
     for y in range(8):
+        line = "| "
         for x in range(8):
             index = 8 * y + x
             square = ""
-            if index == startingSquare:
+            if index == starting_square:
                 square = "S "
-            elif index == targetSquare:
+            elif index == target_square:
                 square = "E "
             else:
-                square = str(board.square[8 * y + x]) + " "
+                square = str(board.square[index]) + " "
             line += square if len(square) > 2 else square + " "
         print(line + "|")
-        line = "| "
     print("---------------------------")
 
 

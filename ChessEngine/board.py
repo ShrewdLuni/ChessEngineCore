@@ -1,31 +1,31 @@
-import ChessEngine.piece as Piece
+from ChessEngine import piece
+
 
 class Board:
     def __init__(self):
         self.square = [0] * 64
-        self.colorToMove = "w"
+        self.color_to_move = "w"
 
-
-    def FENtoBoard(self, FENString):
+    def fen_to_board(self, fen_string):
         fen_to_piece = {
-            'k': Piece.King,
-            'q': Piece.Queen,
-            'r': Piece.Rook,
-            'b': Piece.Bishop,
-            'n': Piece.Knight,
-            'p': Piece.Pawn,
+            'k': piece.KING,
+            'q': piece.QUEEN,
+            'r': piece.ROOK,
+            'b': piece.BISHOP,
+            'n': piece.KNIGHT,
+            'p': piece.PAWN,
         }
 
         index = 0
-        fields = FENString.split(" ")
+        fields = fen_string.split(" ")
         position = fields[0]
-        self.colorToMove = fields[1]
+        self.color_to_move = fields[1]
 
         for char in position:
             if char.isdigit():
                 index += int(char)
             elif char != "/":
-                piece_color = Piece.White if char.isupper() else Piece.Black
+                piece_color = piece.WHITE if char.isupper() else piece.BLACK
                 piece_type = fen_to_piece[char.lower()]
 
                 self.square[index] = piece_type | piece_color

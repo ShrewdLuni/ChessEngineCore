@@ -1,16 +1,19 @@
 import random
 
 from board import Board
-from moveGenerator import MoveGenerator
+from move_generator import MoveGenerator
+from ChessEngine.precomputed_move_data import PrecomputedMoveData
+
 
 class Engine:
     def __init__(self):
         self.board = Board()
-        self.moveGenerator = MoveGenerator(self.board)
+        self.precomputed_move_data = PrecomputedMoveData()
+        self.move_generator = MoveGenerator(self.board, self.precomputed_move_data)
 
-    def GetRandomMove(self, FENString):
-        self.board.FENtoBoard(FENString)
-        self.moveGenerator.GenerateLegalMoves()
+    def get_random_move(self, fen_string):
+        self.board.fen_to_board(fen_string)
+        self.move_generator.generate_legal_moves()
 
-        randomMove = random.randint(0, len(self.moveGenerator.moves) - 1)
-        return self.moveGenerator.moves[randomMove]
+        random_move = random.randint(0, len(self.move_generator.moves) - 1)
+        return self.move_generator.moves[random_move]
