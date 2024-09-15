@@ -35,15 +35,15 @@ class PrecomputedMoveData:
                 ]
                 self.knight_moves[square_index] = []
                 knight_offsets = {
-                    1: (2, -1),
-                    2: (2, 1),
-                    3: (1, -2),
-                    4: (1, 2),
+                    0: (2, -1),
+                    1: (2, 1),
+                    2: (1, -2),
+                    3: (1, 2),
 
-                    5: (-1, -2),
-                    6: (-1, 2),
-                    7: (-2, -1),
-                    8: (-2, 1)
+                    4: (-1, -2),
+                    5: (-1, 2),
+                    6: (-2, -1),
+                    7: (-2, 1)
                 }
                 for offset_index in knight_offsets:
                     offset = knight_offsets[offset_index]

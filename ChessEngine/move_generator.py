@@ -38,7 +38,12 @@ class MoveGenerator:
         pass
 
     def generate_knight_moves(self, starting_square):
-        pass
+        for direction in self.precomputed_data.knight_moves[starting_square]:
+            target_square = starting_square + direction
+            if piece.is_color(self.board.square[target_square], self.friendly_color):
+                continue
+
+            self.moves.append(Move(starting_square, target_square))
 
     def generate_sliding_moves(self, starting_square, piece_type):
         starting_direction_index = 4 if piece_type == piece.BISHOP else 0
