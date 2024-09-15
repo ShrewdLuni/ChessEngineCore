@@ -1,6 +1,10 @@
+from ChessEngine import piece
+
+
 class PrecomputedMoveData:
     def __init__(self):
         self.edges = {}
+        self.knight_moves = {}
         self.precompute_move_data()
 
     def precompute_move_data(self):
@@ -29,3 +33,19 @@ class PrecomputedMoveData:
                     up_right,
                     down_right,
                 ]
+                self.knight_moves[square_index] = []
+                knight_offsets = {
+                    1: (2, -1),
+                    2: (2, 1),
+                    3: (1, -2),
+                    4: (1, 2),
+
+                    5: (-1, -2),
+                    6: (-1, 2),
+                    7: (-2, -1),
+                    8: (-2, 1)
+                }
+                for offset_index in knight_offsets:
+                    offset = knight_offsets[offset_index]
+                    if 0 <= y + offset[0] < 8 and 0 <= x + offset[1] < 8:
+                        self.knight_moves[square_index].append(piece.KNIGHT_DIRECTIONS[offset_index])
