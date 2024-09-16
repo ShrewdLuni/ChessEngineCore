@@ -47,5 +47,5 @@ class PrecomputedMoveData:
                 }
                 for offset_index in knight_offsets:
                     offset = knight_offsets[offset_index]
-                    if 0 <= y + offset[0] < 8 and 0 <= x + offset[1] < 8:
+                    if 0 <= y - offset[0] < 8 and 0 <= x + offset[1] < 8:
                         self.knight_moves[square_index].append(piece.KNIGHT_DIRECTIONS[offset_index])
