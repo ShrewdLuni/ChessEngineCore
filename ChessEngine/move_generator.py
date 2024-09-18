@@ -7,12 +7,15 @@ class MoveGenerator:
         self.moves = []
         self.board = board
 
-        self.friendly_color = piece.WHITE
-        self.opponent_color = piece.BLACK
+        self.friendly_color = piece.WHITE if board.color_to_move == "w" else piece.BLACK
+        self.opponent_color = piece.BLACK if board.color_to_move == "w" else piece.WHITE
 
         self.precomputed_data = precomputed_data
 
     def generate_legal_moves(self):
+        self.friendly_color = piece.WHITE if self.board.color_to_move == "w" else piece.BLACK
+        self.opponent_color = piece.BLACK if self.board.color_to_move == "w" else piece.WHITE
+        self.moves = []
         self.generate_moves()
 
     def generate_moves(self):
@@ -20,7 +23,7 @@ class MoveGenerator:
             current_piece = self.board.square[index]
             if current_piece == 0:
                 continue
-            if piece.is_color(current_piece, piece.WHITE):
+            if piece.is_color(current_piece, self.friendly_color):
                 piece_type = piece.get_piece_type(current_piece)
                 if piece_type == piece.PAWN:
                     self.generate_pawn_moves(index)
@@ -42,7 +45,6 @@ class MoveGenerator:
             target_square = starting_square + direction
             if piece.is_color(self.board.square[target_square], self.friendly_color):
                 continue
-
             self.moves.append(Move(starting_square, target_square))
 
     def generate_sliding_moves(self, starting_square, piece_type):
