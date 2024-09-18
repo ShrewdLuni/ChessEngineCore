@@ -1,4 +1,5 @@
 import json
+import random
 
 from ChessEngine.board import Board
 from ChessEngine.move_generator import MoveGenerator
@@ -8,14 +9,21 @@ def main():
     brd = Board()
     pmd = PrecomputedMoveData()
     mg = MoveGenerator(brd, pmd)
-    brd.fen_to_board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
-
+    brd.fen_to_board("rnbqkbnr/8/8/8/8/8/8/RNBQKBNR w KQkq - 0 1")
     mg.generate_legal_moves()
 
-    move_count = 0
-    for move in mg.moves:
-        move_count += 1
-        render_board(brd, move.starting_square, move.target_square)
+    random_move = mg.moves[random.randint(0, len(mg.moves) - 1)]
+    brd.make_move(random_move.starting_square, random_move.target_square)
+    random_move = mg.moves[random.randint(0, len(mg.moves) - 1)]
+    brd.make_move(random_move.starting_square, random_move.target_square)
+    print(brd.fen_from_board())
+    render_board(brd,-1,-1)
+
+    # mg.generate_legal_moves()
+    # move_count = 0
+    # for move in mg.moves:
+    #     move_count += 1
+    #     render_board(brd, move.starting_square, move.target_square)
 
     print(f"Total moves generated: {move_count}")
 
