@@ -1,4 +1,5 @@
 from ChessEngine.move import Move
+from ChessEngine import move_flags
 from ChessEngine import piece
 
 
@@ -35,7 +36,39 @@ class MoveGenerator:
                     self.generate_sliding_moves(index, piece_type)
 
     def generate_pawn_moves(self, starting_square):
-        pass
+        is_white = piece.is_color(self.board.square[starting_square], piece.WHITE)
+
+        edges = self.precomputed_data.edges[starting_square]
+        edges = [edges[0], edges[4], edges[6]] if is_white else [edges[1], edges[5], edges[7]]
+
+        pawn_move_offset = -8 if is_white else 8
+        pawn_capture_offsets = [-9, -7] if is_white else [7, 9]
+
+        target_square = starting_square + pawn_move_offset
+        if self.board.square[target_square] == 0:
+            if edges[0] == 1:
+                self.generate_promotion_moves(starting_square, target_square)
+            else:
+                self.moves.append(Move(starting_square, target_square))
+            target_square += pawn_move_offset
+            if edges[0] == 6 and self.board.square[target_square] == 0:
+                self.moves.append(Move(starting_square, target_square, move_flags.pawn_two_forward))
+
+        for i in range(len(pawn_capture_offsets)):
+            target_square = starting_square + pawn_capture_offsets[i]
+            if self.board.en_passant != -1 and target_square - pawn_move_offset == self.board.en_passant:
+                self.moves.append(Move(starting_square, target_square, move_flags.en_passant_capture))
+            elif piece.is_color(self.board.square[target_square], self.opponent_color) and edges[i + 1] > 0:
+                if edges[0] == 1:
+                    self.generate_promotion_moves(starting_square, target_square)
+                else:
+                    self.moves.append(Move(starting_square, target_square))
+
+    def generate_promotion_moves(self, starting_square, target_square):
+        self.moves.append(Move(starting_square, target_square, move_flags.promote_to_queen))
+        self.moves.append(Move(starting_square, target_square, move_flags.promote_to_knight))
+        self.moves.append(Move(starting_square, target_square, move_flags.promote_to_rook))
+        self.moves.append(Move(starting_square, target_square, move_flags.promote_to_bishop))
 
     def generate_king_moves(self, starting_square):
         pass
