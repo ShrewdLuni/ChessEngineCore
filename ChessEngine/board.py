@@ -1,15 +1,14 @@
 from ChessEngine import piece
 
-
 class Board:
     def __init__(self):
         self.square = [0] * 64
         self.color_to_move = "w"
         self.castling = "KQkq"
-        self.en_passant = "-"
+        self.en_passant = -1
         self.half_move_clock = 0
         self.full_move_number = 1
-        self.fen_to_board("rnbqkbnr/8/8/8/8/8/8/RNBQKBNR w KQkq - 0 1")
+        self.fen_to_board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
     def fen_to_board(self, fen_string):
         fen_to_piece = {
@@ -73,8 +72,30 @@ class Board:
 
         return f'{pieces_position} {self.color_to_move} {self.castling} {self.en_passant} {self.half_move_clock} {self.full_move_number}'
 
-    def make_move(self, starting_square, target_square):
-        self.square[target_square] = self.square[starting_square]
+    def make_move(self, starting_square, target_square, flag = 0):
+        self.en_passant = -1
+
+        match flag:
+            case 0:
+                self.square[target_square] = self.square[starting_square]
+            case 1:
+                self.square[target_square] = self.square[starting_square]
+            case 2:
+                pass
+            case 3 | 4 | 5 | 6:
+                piece_color = piece.WHITE if piece.is_color(self.square[starting_square], piece.WHITE) else piece.BLACK
+                if flag == 3:
+                    self.square[target_square] = piece.QUEEN | piece_color
+                elif flag == 4:
+                    self.square[target_square] = piece.KNIGHT | piece_color
+                elif flag == 5:
+                    self.square[target_square] = piece.ROOK | piece_color
+                elif flag == 6:
+                    self.square[target_square] = piece.BISHOP | piece_color
+            case 7:
+                self.en_passant = target_square
+                self.square[target_square] = self.square[starting_square]
+
         self.square[starting_square] = piece.NOTHING
         self.color_to_move = "w" if self.color_to_move == "b" else "b"
 
