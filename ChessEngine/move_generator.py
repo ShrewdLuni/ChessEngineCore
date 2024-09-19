@@ -71,7 +71,11 @@ class MoveGenerator:
         self.moves.append(Move(starting_square, target_square, move_flags.promote_to_bishop))
 
     def generate_king_moves(self, starting_square):
-        pass
+        for direction_index in range(len(piece.KING_DIRECTIONS)):
+            target_square = starting_square + piece.KING_DIRECTIONS[direction_index]
+            if self.precomputed_data.edges[direction_index] == 0 or piece.is_color(self.board.square[target_square], self.friendly_color):
+                continue
+            self.moves.append(Move(starting_square, target_square))
 
     def generate_knight_moves(self, starting_square):
         for direction in self.precomputed_data.knight_moves[starting_square]:
