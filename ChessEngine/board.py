@@ -4,13 +4,30 @@ class Board:
     def __init__(self):
         self.square = [0] * 64
         self.color_to_move = "w"
-        self.castling = "KQkq"
+        self.castling = [1, 1, 1, 1]
         self.en_passant = -1
         self.half_move_clock = 0
         self.full_move_number = 1
-        self.fen_to_board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
     def fen_to_board(self, fen_string):
+        fields = fen_string.split(" ")
+        position = fields[0]
+        self.color_to_move = fields[1]
+        self.half_move_clock = fields[4]
+        self.full_move_number = fields[5]
+        castling = [0, 0, 0, 0]
+        if "K" in fields[2]:
+            castling[0] = 1
+        if "Q" in fields[2]:
+            castling[1] = 1
+        if "k" in fields[2]:
+            castling[2] = 1
+        if "q" in fields[2]:
+            castling[3] = 1
+
+        if fields[3] != "-":
+            self.en_passant = (ord(position[0]) - 97) + (8 * (8 - int(position[1])))
+
         fen_to_piece = {
             'k': piece.KING,
             'q': piece.QUEEN,
@@ -21,10 +38,6 @@ class Board:
         }
 
         index = 0
-        fields = fen_string.split(" ")
-        position = fields[0]
-        self.color_to_move = fields[1]
-
         for char in position:
             if char.isdigit():
                 index += int(char)
@@ -69,8 +82,15 @@ class Board:
                 if piece.is_color(current_square, piece.WHITE):
                     current_piece = current_piece.upper()
                 pieces_position += current_piece
+        if empty > 0:
+            pieces_position += str(empty)
 
-        return f'{pieces_position} {self.color_to_move} {self.castling} {self.en_passant} {self.half_move_clock} {self.full_move_number}'
+        castling = ''.join([char for char, flag in zip("KQkq", self.castling) if flag == 1])
+        en_passant = "-"
+        if self.en_passant != -1:
+            en_passant = ["h", "g", "f", "e", "d", "c", "b", "a"][(self.en_passant // 8) - 1] + str(self.en_passant % 8)
+
+        return f'{pieces_position} {self.color_to_move} {castling} {en_passant} {self.half_move_clock} {self.full_move_number}'
 
     def make_move(self, starting_square, target_square, flag = 0):
         self.en_passant = -1

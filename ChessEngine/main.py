@@ -9,23 +9,10 @@ def main():
     brd = Board()
     pmd = PrecomputedMoveData()
     mg = MoveGenerator(brd, pmd)
-    brd.fen_to_board("rnbqkbnr/8/8/8/8/8/8/RNBQKBNR w KQkq - 0 1")
-    mg.generate_legal_moves()
-
-    random_move = mg.moves[random.randint(0, len(mg.moves) - 1)]
-    brd.make_move(random_move.starting_square, random_move.target_square)
-    random_move = mg.moves[random.randint(0, len(mg.moves) - 1)]
-    brd.make_move(random_move.starting_square, random_move.target_square)
-    print(brd.fen_from_board())
+    brd.fen_to_board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/7R w KQkq - 0 1")
     render_board(brd,-1,-1)
-
-    # mg.generate_legal_moves()
-    # move_count = 0
-    # for move in mg.moves:
-    #     move_count += 1
-    #     render_board(brd, move.starting_square, move.target_square)
-
-    print(f"Total moves generated: {move_count}")
+    print(brd.fen_from_board())
+    mg.generate_legal_moves()
 
 def render_board(board, starting_square, target_square):
     print(f"Start: {starting_square}, Target: {target_square}")
