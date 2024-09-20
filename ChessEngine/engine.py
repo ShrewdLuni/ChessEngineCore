@@ -14,12 +14,12 @@ class Engine:
     def get_random_move(self):
         self.move_generator.generate_legal_moves()
         random_move = self.move_generator.moves[random.randint(0, len(self.move_generator.moves) - 1)]
-        self.board.make_move(random_move.starting_square, random_move.target_square)
+        self.board.make_move(random_move.get_starting_square(), random_move.get_target_square(), random_move.get_move_flag())
         return random_move
 
     def get_legal_moves(self):
         self.move_generator.generate_legal_moves()
         return self.move_generator.moves
 
-    def make_move(self, starting_square, target_square):
-        self.board.make_move(starting_square, target_square)
+    def make_move(self, starting_square, target_square, flag=0):
+        self.board.make_move(starting_square, target_square, flag)
