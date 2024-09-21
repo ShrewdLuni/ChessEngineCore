@@ -31,7 +31,7 @@ class MoveGenerator:
                 elif piece_type == piece.KING:
                     self.generate_king_moves(index)
                 elif piece_type == piece.KNIGHT:
-                    self. generate_knight_moves(index)
+                    self.generate_knight_moves(index)
                 else:
                     self.generate_sliding_moves(index, piece_type)
 
@@ -79,6 +79,15 @@ class MoveGenerator:
                 continue
             self.moves.append(Move(starting_square, target_square))
 
+        starting_index = 0 if piece.is_color(self.board.square[starting_square], piece.WHITE) else 2
+        for i in range(starting_index, starting_index + 2):
+            if self.board.castling[i] == 1:
+                castling_squares, rook_squares, free_squares = self.precomputed_data.castling_data
+                is_rook = piece.get_piece_type(self.board.square[rook_squares[i]]) == piece.ROOK
+                is_friendly_color = piece.is_color(self.board.square[rook_squares[i]], self.friendly_color)
+                is_free_squares = all(self.board.square[index] == piece.NOTHING for index in free_squares[i])
+                if is_rook and is_friendly_color and is_free_squares:
+                    self.moves.append(Move(starting_square, castling_squares[i], 2))
 
     def generate_knight_moves(self, starting_square):
         for direction in self.precomputed_data.knight_moves[starting_square]:

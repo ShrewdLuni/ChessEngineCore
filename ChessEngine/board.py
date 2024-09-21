@@ -1,5 +1,6 @@
 from ChessEngine import piece
 
+
 class Board:
     def __init__(self):
         self.square = [0] * 64
@@ -8,6 +9,16 @@ class Board:
         self.en_passant = -1
         self.half_move_clock = 0
         self.full_move_number = 1
+
+        self.__castling_mappings = {
+            62: ([63, 61], (0, 1)),  # White Kingside
+            58: ([56, 59], (0, 1)),  # White Queenside
+            6: ([0, 5], (2, 3)),  # Black Kingside
+            2: ([7, 3], (2, 3)),  # Black Queenside
+        }
+        self.__rook_castling_map = {63: 0, 56: 1, 0: 2, 7: 3}
+
+        self.fen_to_board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
     def fen_to_board(self, fen_string):
         fields = fen_string.split(" ")
@@ -92,16 +103,31 @@ class Board:
 
         return f'{pieces_position} {self.color_to_move} {castling} {en_passant} {self.half_move_clock} {self.full_move_number}'
 
-    def make_move(self, starting_square, target_square, flag = 0):
+    def make_move(self, starting_square, target_square, flag=0):
         self.en_passant = -1
 
         match flag:
             case 0:
                 self.square[target_square] = self.square[starting_square]
+                if any(self.castling):
+                    piece_type = piece.get_piece_type(self.square[starting_square])
+                    if piece_type == piece.KING:
+                        color_index = 0 if piece.is_color(self.square[starting_square], piece.WHITE) else 2
+                        self.castling[color_index] = self.castling[color_index + 1] = 0
+                    elif piece_type == piece.ROOK:
+                        castling_index = self.__rook_castling_map.get(starting_square)
+                        if castling_index is not None:
+                            self.castling[castling_index] = 0
             case 1:
                 self.square[target_square] = self.square[starting_square]
             case 2:
-                pass
+                self.square[target_square] = self.square[starting_square]
+                if target_square in self.__castling_mappings:
+                    rook_from_to, castling_indices = self.__castling_mappings[target_square]
+                    self.castling[castling_indices[0]] = 0
+                    self.castling[castling_indices[1]] = 0
+                self.square[rook_from_to[1]] = self.square[rook_from_to[0]]
+                self.square[rook_from_to[0]] = piece.NOTHING
             case 3 | 4 | 5 | 6:
                 piece_color = piece.WHITE if piece.is_color(self.square[starting_square], piece.WHITE) else piece.BLACK
                 if flag == 3:

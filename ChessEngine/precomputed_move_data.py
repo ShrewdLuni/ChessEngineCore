@@ -5,9 +5,15 @@ class PrecomputedMoveData:
     def __init__(self):
         self.edges = {}
         self.knight_moves = {}
+        self.castling_data = ()
         self.precompute_move_data()
 
     def precompute_move_data(self):
+        self.castling_data = (
+            (62, 58, 6, 2),  # king target squares
+            (63, 56, 0, 7),  # rook starting squares
+            ((61, 62), (59, 58, 57), (5, 6), (3, 2, 1))  # square that need to be free for castle to be possible
+        )
         for y in range(8):
             for x in range(8):
                 square_index = y * 8 + x
