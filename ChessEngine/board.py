@@ -10,6 +10,8 @@ class Board:
         self.half_move_clock = 0
         self.full_move_number = 1
 
+        self.state_stack = []
+
         self.__castling_mappings = {
             62: ([63, 61], (0, 1)),  # White Kingside
             58: ([56, 59], (0, 1)),  # White Queenside
@@ -104,7 +106,14 @@ class Board:
         return f'{pieces_position} {self.color_to_move} {castling} {en_passant} {self.half_move_clock} {self.full_move_number}'
 
     def make_move(self, starting_square, target_square, flag=0):
-        self.en_passant = -1
+        self.state_stack.append([
+            (starting_square, self.square[starting_square]),  # Index 0: (starting square, piece)
+            (target_square, self.square[target_square]),  # Index 1: (target square, piece)
+            flag,  # Index 2: flag
+            (self.en_passant, self.square[self.en_passant]),  # Index 3: en passant
+            self.castling[:],  # Index 4: castling rights
+            self.color_to_move  # Index 5: color to move
+        ])
 
         match flag:
             case 0:
@@ -120,6 +129,7 @@ class Board:
                             self.castling[castling_index] = 0
             case 1:
                 self.square[target_square] = self.square[starting_square]
+                self.square[self.en_passant] = piece.NOTHING
             case 2:
                 self.square[target_square] = self.square[starting_square]
                 if target_square in self.__castling_mappings:
@@ -142,8 +152,35 @@ class Board:
                 self.en_passant = target_square
                 self.square[target_square] = self.square[starting_square]
 
+        if flag != 7:
+            self.en_passant = -1
+
         self.square[starting_square] = piece.NOTHING
         self.color_to_move = "w" if self.color_to_move == "b" else "b"
 
     def unmake_move(self):
-        pass
+        if len(self.state_stack) == 0:
+            return
+
+        last_state = self.state_stack.pop()
+
+        starting_square, starting_piece = last_state[0]
+        target_square, target_piece = last_state[1]
+        self.en_passant = last_state[3][0]
+        self.castling = last_state[4]
+        self.color_to_move = last_state[5]
+
+        self.square[starting_square] = starting_piece
+        self.square[target_square] = target_piece
+
+        flag = last_state[2]
+        if flag == 1:
+            self.square[self.en_passant] = last_state[3][1]
+        elif flag == 2:
+            if target_square in self.__castling_mappings:
+                rook_from_to, castling_indices = self.__castling_mappings[target_square]
+                self.castling[castling_indices[0]] = 1
+                self.castling[castling_indices[1]] = 1
+
+            self.square[rook_from_to[0]] = self.square[rook_from_to[1]]
+            self.square[rook_from_to[1]] = piece.NOTHING

@@ -23,3 +23,6 @@ class Engine:
 
     def make_move(self, starting_square, target_square, flag=0):
         self.board.make_move(starting_square, target_square, flag)
+
+    def unmake_move(self):
+        self.board.unmake_move()
