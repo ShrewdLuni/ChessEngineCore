@@ -10,13 +10,11 @@ def main():
     pmd = PrecomputedMoveData()
     mg = MoveGenerator(brd, pmd)
     brd.fen_to_board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/7R w KQkq - 0 1")
-    render_board(brd,-1,-1)
-    print(brd.fen_from_board())
     mg.generate_legal_moves()
 
 def render_board(board, starting_square, target_square):
-    print(f"Start: {starting_square}, Target: {target_square}")
-    print("---------------------------")
+    # print(f"Start: {starting_square}, Target: {target_square}")
+    # print("---------------------------")
     for y in range(8):
         line = "| "
         for x in range(8):
