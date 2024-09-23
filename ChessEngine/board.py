@@ -20,7 +20,7 @@ class Board:
         }
         self.__rook_castling_map = {63: 0, 56: 1, 0: 2, 7: 3}
 
-        self.fen_to_board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+        self.fen_to_board("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1")
 
     def fen_to_board(self, fen_string):
         fields = fen_string.split(" ")
@@ -39,7 +39,8 @@ class Board:
             castling[3] = 1
 
         if fields[3] != "-":
-            self.en_passant = (ord(position[0]) - 97) + (8 * (8 - int(position[1])))
+
+            self.en_passant = (ord(fields[3][0]) - 97) + (8 * (8 - int(fields[3][1])))
 
         fen_to_piece = {
             'k': piece.KING,
@@ -101,7 +102,7 @@ class Board:
         castling = ''.join([char for char, flag in zip("KQkq", self.castling) if flag == 1])
         en_passant = "-"
         if self.en_passant != -1:
-            en_passant = ["h", "g", "f", "e", "d", "c", "b", "a"][(self.en_passant // 8) - 1] + str(self.en_passant % 8)
+            en_passant = ["a", "b", "c", "d", "e", "f", "g", "h"][self.en_passant % 8] + str(8 - (self.en_passant // 8))
 
         return f'{pieces_position} {self.color_to_move} {castling} {en_passant} {self.half_move_clock} {self.full_move_number}'
 
