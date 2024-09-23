@@ -1,16 +1,9 @@
-import json
-import random
-
-from ChessEngine.board import Board
-from ChessEngine.move_generator import MoveGenerator
-from ChessEngine.precomputed_move_data import PrecomputedMoveData
+from ChessEngine.engine import Engine
 
 def main():
-    brd = Board()
-    pmd = PrecomputedMoveData()
-    mg = MoveGenerator(brd, pmd)
-    brd.fen_to_board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/7R w KQkq - 0 1")
-    mg.generate_legal_moves()
+    engine = Engine()
+    print(render_board(engine.board, -1, -1))
+
 
 def render_board(board, starting_square, target_square):
     # print(f"Start: {starting_square}, Target: {target_square}")
