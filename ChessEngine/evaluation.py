@@ -2,7 +2,7 @@ from ChessEngine import piece
 
 
 class Evaluation:
-    def __init__(self):
+    def __init__(self, board):
         self.pawn_value = 1
         self.knight_value = 3
         self.bishop_value = 3
@@ -10,12 +10,16 @@ class Evaluation:
         self.queen_value = 9
 
         self.pieces_value_map = {
+            piece.NOTHING: 0,
+            piece.KING: 0,
             piece.PAWN: self.pawn_value,
             piece.KNIGHT: self.knight_value,
             piece.BISHOP: self.bishop_value,
             piece.ROOK: self.rook_value,
             piece.QUEEN: self.queen_value
         }
+
+        self.board = board
 
     ### alpha version used for proto, will be changed later to something more advanced
     def evaluate(self):

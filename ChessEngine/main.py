@@ -1,8 +1,10 @@
 from ChessEngine.engine import Engine
+from ChessEngine.evaluation import Evaluation
 
 def main():
     engine = Engine()
-    print(render_board(engine.board, -1, -1))
+    evaluation = Evaluation(engine.board)
+    print(evaluation.evaluate())
 
 
 def render_board(board, starting_square, target_square):
