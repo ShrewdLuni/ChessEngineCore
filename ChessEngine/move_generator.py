@@ -23,6 +23,12 @@ class MoveGenerator:
             self.board.make_move(move.get_starting_square(), move.get_target_square(), move.get_move_flag())
             king_position = next(i for i in range(64) if self.board.square[i] == piece.KING | color)
             opponent_responses = self.generate_moves()
+            if move.get_move_flag() == 2:
+                castle_index = self.precomputed_data.castling_data[0].index(move.get_target_square())
+                to_check = self.precomputed_data.castling_data[3][castle_index]
+                if any(opponent_move.get_target_square() in to_check for opponent_move in self.generate_moves()):
+                    self.board.unmake_move()
+                    continue
             if not any(opponent_move.get_target_square() == king_position for opponent_move in opponent_responses):
                 legal_moves.append(move)
             self.board.unmake_move()
@@ -41,6 +47,7 @@ class MoveGenerator:
                 if piece_type == piece.PAWN:
                     moves.extend(self.generate_pawn_moves(index))
                 elif piece_type == piece.KING:
+                    pass
                     moves.extend(self.generate_king_moves(index))
                 elif piece_type == piece.KNIGHT:
                     moves.extend(self.generate_knight_moves(index))
@@ -61,7 +68,7 @@ class MoveGenerator:
         target_square = starting_square + pawn_move_offset
         if self.board.square[target_square] == 0:
             if edges[0] == 1:
-                self.generate_promotion_moves(starting_square, target_square)
+                moves.extend(self.generate_promotion_moves(starting_square, target_square))
             else:
                 moves.append(Move(starting_square, target_square))
             target_square += pawn_move_offset
@@ -70,11 +77,11 @@ class MoveGenerator:
 
         for i in range(len(pawn_capture_offsets)):
             target_square = starting_square + pawn_capture_offsets[i]
-            if self.board.en_passant != -1 and target_square - pawn_move_offset == self.board.en_passant:
+            if self.board.en_passant != -1 and target_square - pawn_move_offset == self.board.en_passant and edges[i + 1] > 0:
                 moves.append(Move(starting_square, target_square, move_flags.en_passant_capture))
             elif piece.is_color(self.board.square[target_square], self.opponent_color) and edges[i + 1] > 0:
                 if edges[0] == 1:
-                    self.generate_promotion_moves(starting_square, target_square)
+                    moves.extend(self.generate_promotion_moves(starting_square, target_square))
                 else:
                     moves.append(Move(starting_square, target_square))
         return moves
@@ -98,12 +105,14 @@ class MoveGenerator:
         starting_index = 0 if piece.is_color(self.board.square[starting_square], piece.WHITE) else 2
         for i in range(starting_index, starting_index + 2):
             if self.board.castling[i] == 1:
-                castling_squares, rook_squares, free_squares = self.precomputed_data.castling_data
-                is_rook = piece.get_piece_type(self.board.square[rook_squares[i]]) == piece.ROOK
-                is_friendly_color = piece.is_color(self.board.square[rook_squares[i]], self.friendly_color)
-                is_free_squares = all(self.board.square[index] == piece.NOTHING for index in free_squares[i])
-                if is_rook and is_friendly_color and is_free_squares:
-                    moves.append(Move(starting_square, castling_squares[i], 2))
+                castling_squares, rook_squares, free_squares = self.precomputed_data.castling_data[:3]
+                if piece.get_piece_type(self.board.square[rook_squares[i]]) != piece.ROOK:
+                    continue
+                if not piece.is_color(self.board.square[rook_squares[i]], self.friendly_color):
+                    continue
+                if any(self.board.square[index] != piece.NOTHING for index in free_squares[i]):
+                    continue
+                moves.append(Move(starting_square, castling_squares[i], 2))
         return moves
 
     def generate_knight_moves(self, starting_square):

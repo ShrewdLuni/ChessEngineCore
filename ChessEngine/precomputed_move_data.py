@@ -12,7 +12,8 @@ class PrecomputedMoveData:
         self.castling_data = (
             (62, 58, 6, 2),  # king target squares
             (63, 56, 0, 7),  # rook starting squares
-            ((61, 62), (59, 58, 57), (5, 6), (3, 2, 1))  # square that need to be free for castle to be possible
+            ((61, 62), (59, 58, 57), (5, 6), (3, 2, 1)),  # squares that need to be free for castle to be possible
+            ((61, 62), (59, 58), (5, 6), (3, 2)) # squares that need to be safe for castle
         )
         for y in range(8):
             for x in range(8):
