@@ -20,7 +20,7 @@ class Board:
         }
         self.__rook_castling_map = {63: 0, 56: 1, 0: 2, 7: 3}
 
-        self.fen_to_board("8/8/8/8/8/8/8/8 w KQkq - 0 1")
+        self.fen_to_board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
     def fen_to_board(self, fen_string):
         fields = fen_string.split(" ")
