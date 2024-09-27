@@ -23,7 +23,7 @@ class Engine:
         return random_move
 
     def get_best_move(self):
-        alpha = self.search_function.search(3, float('-inf'), float('inf'), is_root=True)
+        alpha = self.search_function.iterative_deepening(15, 3)
         best_move = self.search_function.best_move
         self.board.make_move(best_move.get_starting_square(), best_move.get_target_square(), best_move.get_move_flag())
         return best_move

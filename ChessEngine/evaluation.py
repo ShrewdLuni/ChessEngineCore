@@ -30,5 +30,5 @@ class Evaluation:
         material_difference = 0
         for index in range(64):
             value = self.pieces_value_map[piece.get_piece_type(self.board.square[index])]
-            material_difference += value if piece.is_color(self.board.square[index],piece.WHITE) else -value
-        return material_difference
+            material_difference += value if piece.is_color(self.board.square[index], piece.WHITE) else -value
+        return material_difference if self.board.color_to_move == "w" else -material_difference
