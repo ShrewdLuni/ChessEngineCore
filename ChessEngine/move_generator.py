@@ -77,13 +77,14 @@ class MoveGenerator:
 
         for i in range(len(pawn_capture_offsets)):
             target_square = starting_square + pawn_capture_offsets[i]
-            if self.board.en_passant != -1 and target_square - pawn_move_offset == self.board.en_passant and edges[i + 1] > 0:
-                moves.append(Move(starting_square, target_square, move_flags.en_passant_capture))
-            elif piece.is_color(self.board.square[target_square], self.opponent_color) and edges[i + 1] > 0:
-                if edges[0] == 1:
-                    moves.extend(self.generate_promotion_moves(starting_square, target_square))
-                else:
-                    moves.append(Move(starting_square, target_square))
+            if edges[i + 1] > 0:
+                if self.board.en_passant != -1 and target_square - pawn_move_offset == self.board.en_passant:
+                    moves.append(Move(starting_square, target_square, move_flags.en_passant_capture))
+                elif piece.is_color(self.board.square[target_square], self.opponent_color):
+                    if edges[0] == 1:
+                        moves.extend(self.generate_promotion_moves(starting_square, target_square))
+                    else:
+                        moves.append(Move(starting_square, target_square))
         return moves
 
     def generate_promotion_moves(self, starting_square, target_square):
