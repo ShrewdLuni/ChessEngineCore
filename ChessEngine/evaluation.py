@@ -1,23 +1,18 @@
 from ChessEngine import piece
+from ChessEngine import piece_square_table
 
 
 class Evaluation:
     def __init__(self, board):
-        self.pawn_value = 1
-        self.knight_value = 3
-        self.bishop_value = 3
-        self.rook_value = 5
-        self.queen_value = 9
-
         self.pieces_value_map = {
-            piece.NOTHING: 0,
-            piece.KING: 0,
-            piece.PAWN: self.pawn_value,
-            piece.KNIGHT: self.knight_value,
-            piece.BISHOP: self.bishop_value,
-            piece.ROOK: self.rook_value,
-            piece.QUEEN: self.queen_value
+            piece.PAWN: 100,
+            piece.KNIGHT: 300,
+            piece.BISHOP: 300,
+            piece.ROOK: 500,
+            piece.QUEEN: 900,
+            piece.KING: 2000
         }
+        self.pawn_position = [0] * 64
 
         self.board = board
 
@@ -29,6 +24,11 @@ class Evaluation:
     def calculate_material_difference(self):
         material_difference = 0
         for index in range(64):
-            value = self.pieces_value_map[piece.get_piece_type(self.board.square[index])]
-            material_difference += value if piece.is_color(self.board.square[index], piece.WHITE) else -value
+            current_piece = self.board.square[index]
+            if current_piece == 0:
+                continue
+            value = self.pieces_value_map[piece.get_piece_type(current_piece)]
+            value += piece_square_table.piece_position_map[current_piece][index]
+            material_difference += value if piece.is_color(current_piece, piece.WHITE) else -value
+
         return material_difference if self.board.color_to_move == "w" else -material_difference
