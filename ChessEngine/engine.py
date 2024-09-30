@@ -5,7 +5,7 @@ from ChessEngine.move_generator import MoveGenerator
 from ChessEngine.precomputed_move_data import PrecomputedMoveData
 from ChessEngine.evaluation import Evaluation
 from ChessEngine.search_function import SearchFunction
-
+from ChessEngine.board_utility import BoardUtility
 
 class Engine:
     def __init__(self):
@@ -13,7 +13,8 @@ class Engine:
         self.precomputed_move_data = PrecomputedMoveData()
         self.move_generator = MoveGenerator(self.board, self.precomputed_move_data)
         self.evaluation = Evaluation(self.board)
-        self.search_function = SearchFunction(self.board, self.move_generator, self.evaluation)
+        self.board_utility = BoardUtility(self.board, self.move_generator)
+        self.search_function = SearchFunction(self.board, self.move_generator, self.evaluation, self.board_utility)
         self.move_results = {}
 
     def get_random_move(self):
@@ -23,7 +24,7 @@ class Engine:
         return random_move
 
     def get_best_move(self):
-        alpha = self.search_function.iterative_deepening(15, 3)
+        alpha = self.search_function.iterative_deepening(15, 2)
         best_move = self.search_function.best_move
         self.board.make_move(best_move.get_starting_square(), best_move.get_target_square(), best_move.get_move_flag())
         return best_move

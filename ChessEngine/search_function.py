@@ -1,11 +1,14 @@
 import time
 
+from ChessEngine import piece
+
 
 class SearchFunction:
-    def __init__(self, board, move_generator, evaluation):
+    def __init__(self, board, move_generator, evaluation, board_utility):
         self.board = board
         self.move_generator = move_generator
         self.evaluation = evaluation
+        self.board_utility = board_utility
         self.best_move_this_iteration = None
         self.best_move = None
 
@@ -42,22 +45,22 @@ class SearchFunction:
             moves.insert(0, self.best_move_this_iteration)
 
         if len(moves) == 0:
-            if True: #check
-                return float('-inf')
-            return 0 #stalemate
+            if self.board_utility.is_check(piece.WHITE if self.board.color_to_move == "w" else piece.BLACK):
+                return -100000
+            return 0
 
         for move in moves:
             self.board.make_move(move.get_starting_square(), move.get_target_square(), move.get_move_flag())
             evaluation = -self.search(depth - 1, -beta, -alpha)
             self.board.unmake_move()
             if time.time() - self.start_time >= self.time_limit:
-                return 0
+                break
 
             if evaluation >= beta:
                 return beta
-            if evaluation > alpha:
+            if evaluation > alpha and not time.time() - self.start_time >= self.time_limit:
                 alpha = evaluation
-                if is_root:
+                if is_root and not time.time() - self.start_time >= self.time_limit:
                     self.best_move_this_iteration = move
 
         return alpha
