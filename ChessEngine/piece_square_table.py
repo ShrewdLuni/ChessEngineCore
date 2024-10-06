@@ -188,5 +188,5 @@ piece_position_map = {
     piece.BISHOP | piece.BLACK: bishops_black,
     piece.ROOK | piece.BLACK: rooks_black,
     piece.QUEEN | piece.BLACK: queens_black,
-    piece.KING | piece.BLACK: knights_black,
+    piece.KING | piece.BLACK: king_start_black,
 }
