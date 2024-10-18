@@ -1,5 +1,6 @@
 import random
 
+from ChessEngine import piece
 from ChessEngine.board import Board
 from ChessEngine.move_generator import MoveGenerator
 from ChessEngine.precomputed_move_data import PrecomputedMoveData
@@ -17,6 +18,18 @@ class Engine:
         self.search_function = SearchFunction(self.board, self.move_generator, self.evaluation, self.board_utility)
         self.move_results = {}
 
+    def new_game(self):
+        pass#to-do
+
+    def set_position(self, fen):
+        self.board.fen_to_board(fen)
+
+    def make_move(self, starting_square, target_square, flag=0):
+        self.board.make_move(starting_square, target_square, flag)
+
+    def unmake_move(self):
+        self.board.unmake_move()
+
     def get_random_move(self):
         moves = self.move_generator.generate_legal_moves()
         random_move = moves[random.randint(0, len(moves) - 1)]
@@ -30,13 +43,10 @@ class Engine:
         return best_move
 
     def get_legal_moves(self):
-        return self.move_generator.generate_legal_moves()
-
-    def make_move(self, starting_square, target_square, flag=0):
-        self.board.make_move(starting_square, target_square, flag)
-
-    def unmake_move(self):
-        self.board.unmake_move()
+        moves = self.move_generator.generate_legal_moves()
+        if len(moves) == 0:
+            self.board.is_checkmate = self.board_utility.is_check(piece.WHITE if self.board.color_to_move == "w" else piece.BLACK)
+        return moves
 
     def move_generation_test(self, depth, is_root=False):
         if depth == 0:
