@@ -22,6 +22,8 @@ class Board:
 
         self.fen_to_board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
+        self.is_checkmate = False
+
     def fen_to_board(self, fen_string):
         fields = fen_string.split(" ")
         position = fields[0]
