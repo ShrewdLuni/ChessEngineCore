@@ -8,6 +8,7 @@ from ChessEngine.evaluation import Evaluation
 from ChessEngine.search_function import SearchFunction
 from ChessEngine.board_utility import BoardUtility
 
+
 class Engine:
     def __init__(self):
         self.board = Board()
@@ -50,13 +51,13 @@ class Engine:
 
     def move_generation_test(self, depth, is_root=False):
         if depth == 0:
-            return 1
+            return {"count": 1, "moves": None}
         moves = self.move_generator.generate_legal_moves()
         positions = 0
         for move in moves:
             move = [move.get_starting_square(), move.get_target_square(), move.get_move_flag()]
             self.board.make_move(move[0], move[1], move[2])
-            count = self.move_generation_test(depth - 1)
+            count = self.move_generation_test(depth - 1)["count"]
             if is_root:
                 file_map = ["a", "b", "c", "d", "e", "f", "g", "h"]
                 one = file_map[move[0] % 8] + str(8 - (move[0] // 8))
@@ -67,4 +68,4 @@ class Engine:
             positions += count
             self.board.unmake_move()
 
-        return positions
+        return {"count": positions, "moves": {k: self.move_results[k] for k in sorted(self.move_results)}}

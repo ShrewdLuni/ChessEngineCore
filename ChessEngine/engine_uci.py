@@ -1,3 +1,5 @@
+import time
+
 from ChessEngine.engine import Engine
 
 
@@ -17,6 +19,8 @@ class EngineUCI:
                 self.process_position_command(message)
             case "go":
                 self.process_go_command(message)
+            case "perft":
+                self.process_perft_command(message)
             case "stop":
                 print("stop")  # todo
             case "quit":
@@ -35,3 +39,19 @@ class EngineUCI:
         start = "abcdefgh"[move.get_starting_square() % 8] + str(8 - (move.get_starting_square() // 8))
         target = "abcdefgh"[move.get_target_square() % 8] + str(8 - (move.get_target_square() // 8))
         print(f"bestmove {start + target}")
+
+    def process_perft_command(self, message):
+        depth = 3
+        start_time = time.time()
+        result = self.engine.move_generation_test(depth, True)
+        end_time = time.time()
+        total_positions = result["count"]
+        print(result["count"])
+        elapsed_time = end_time - start_time
+        positions_per_second = total_positions / elapsed_time
+        kps = positions_per_second / 1_000
+        print(f"Depth: {depth}")
+        print(f"Total positions: {total_positions}")
+        print(f"Elapsed time: {elapsed_time:.2f} seconds")
+        print(f"Speed: {kps:.2f} thousand positions per second (KPS)")
+
