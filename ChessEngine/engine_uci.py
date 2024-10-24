@@ -8,23 +8,24 @@ class EngineUCI:
         self.engine = Engine()
 
     def receive_command(self, message):
-        match message:
-            case "uci":
-                print("uciok")
-            case "isready":
-                print("readyok")
-            case "ucinewgame":
-                self.engine.new_game()
-            case "position":
-                self.process_position_command(message)
-            case "go":
-                self.process_go_command(message)
-            case "perft":
-                self.process_perft_command(message)
-            case "stop":
-                print("stop")  # todo
-            case "quit":
-                print("quit")  # todo
+        if "uci" in message:
+            print("uciok")
+        elif "isready" in message:
+            print("readyok")
+        elif "ucinewgame" in message:
+            self.engine.new_game()
+        elif "position" in message:
+            self.process_position_command(message)
+        elif "go" in message:
+            self.process_go_command(message)
+        elif "perft" in message:
+            self.process_perft_command(message)
+        elif "stop" in message:
+            print("stop")  # todo
+        elif "quit" in message:
+            print("quit")  # todo
+        else:
+            print("Unrecognized command")
 
     def process_position_command(self, message):
         message = message.lower()
