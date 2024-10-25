@@ -8,11 +8,11 @@ class EngineUCI:
         self.engine = Engine()
 
     def receive_command(self, message):
-        if "uci" in message:
+        if message == "uci":
             print("uciok")
-        elif "isready" in message:
+        elif message == "isready":
             print("readyok")
-        elif "ucinewgame" in message:
+        elif message == "ucinewgame":
             self.engine.new_game()
         elif "position" in message:
             self.process_position_command(message)
@@ -28,12 +28,19 @@ class EngineUCI:
             print("Unrecognized command")
 
     def process_position_command(self, message):
-        message = message.lower()
+        message = message.strip()
+
         if "startpos" in message:
-            self.engine.set_position("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+            fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
         elif "fen" in message:
-            fen = message.split("fen")[1].strip()
-            self.engine.set_position(fen)
+            fen = message.split("fen", 1)[1].strip().split("moves", 1)[0].strip()
+
+        if "moves" in message:
+            moves = message.split("moves", 1)[1].strip().split(" ")
+            for move in moves:
+                start = (ord(move[:2][0]) - 97) + (8 * (8 - int(move[:2][1])))
+                target = (ord(move[2:][0]) - 97) + (8 * (8 - int(move[2:][1])))
+                self.engine.make_move(start, target)
 
     def process_go_command(self, message):
         move = self.engine.get_best_move()
