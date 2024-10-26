@@ -28,13 +28,11 @@ class EngineUCI:
             print("Unrecognized command")
 
     def process_position_command(self, message):
-        message = message.strip()
-
         if "startpos" in message:
             fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
         elif "fen" in message:
             fen = message.split("fen", 1)[1].strip().split("moves", 1)[0].strip()
-
+        self.engine.board.fen_to_board(fen)
         if "moves" in message:
             moves = message.split("moves", 1)[1].strip().split(" ")
             for move in moves:
