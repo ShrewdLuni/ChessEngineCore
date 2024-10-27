@@ -20,6 +20,8 @@ class EngineUCI:
             self.process_go_command(message)
         elif "perft" in message:
             self.process_perft_command(message)
+        elif "d" in message:
+            self.process_draw_command(message)
         elif "stop" in message:
             print("stop")  # todo
         elif "quit" in message:
@@ -61,3 +63,18 @@ class EngineUCI:
         print(f"Elapsed time: {elapsed_time:.2f} seconds")
         print(f"Speed: {kps:.2f} thousand positions per second (KPS)")
 
+    def process_draw_command(self, message):
+        wide = "wide" in message
+        print(self.engine.board.fen_from_board())
+        bar = "+-----+-----+-----+-----+-----+-----+-----+-----+" if wide else "+---+---+---+---+---+---+---+---+"
+        print(bar)
+        pieces_map = {0: " ", 9: "K", 10: "P", 11: "N", 12: "B", 13: "R", 14: "Q", 17: "k", 18: "p", 19: "n", 20: "b",
+                      21: "r", 22: "q"}
+        for y in range(8):
+            line = "|"
+            for x in range(8):
+                index = 8 * y + x
+                piece = pieces_map[self.engine.board.square[index]]
+                line += f"  {piece}  |" if wide else f" {piece} |"
+            print(line)
+            print(bar)
