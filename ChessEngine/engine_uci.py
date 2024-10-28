@@ -49,17 +49,19 @@ class EngineUCI:
         print(f"bestmove {start + target}")
 
     def process_perft_command(self, message):
-        depth = 3
+        depth = 3 if len(message.strip().split(" ")) < 2 else int(message.split(" ")[1])
         start_time = time.time()
         result = self.engine.move_generation_test(depth, True)
         end_time = time.time()
         total_positions = result["count"]
-        print(result["count"])
+        moves = result["moves"]
+        for move in moves:
+            print(f"{move}: {moves[move]}")
+        print(f"\nNodes searched: {total_positions}\n")
         elapsed_time = end_time - start_time
         positions_per_second = total_positions / elapsed_time
         kps = positions_per_second / 1_000
         print(f"Depth: {depth}")
-        print(f"Total positions: {total_positions}")
         print(f"Elapsed time: {elapsed_time:.2f} seconds")
         print(f"Speed: {kps:.2f} thousand positions per second (KPS)")
 
