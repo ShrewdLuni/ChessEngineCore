@@ -50,8 +50,10 @@ class Engine:
         return moves
 
     def move_generation_test(self, depth, is_root=False):
+        if is_root:
+            self.move_results = {}
         if depth == 0:
-            return {"count": 1, "moves": None}
+            return {"count": 1, "moves": {}}
         moves = self.move_generator.generate_legal_moves()
         positions = 0
         for move in moves:

@@ -27,7 +27,7 @@ class EngineUCI:
         elif "quit" in message:
             print("quit")  # todo
         else:
-            print("Unrecognized command")
+            print("Unknown command.")
 
     def process_position_command(self, message):
         if "startpos" in message:
