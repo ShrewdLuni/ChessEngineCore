@@ -9,8 +9,10 @@ class SearchFunction:
         self.move_generator = move_generator
         self.evaluation = evaluation
         self.board_utility = board_utility
+        self.best_move_evaluation_this_iteration = None
         self.best_move_this_iteration = None
         self.best_move = None
+        self.best_move_evaluation = None
 
         self.start_time = None
         self.time_limit = 1
@@ -27,6 +29,7 @@ class SearchFunction:
             alpha = self.search(depth, -float('inf'), float('inf'), is_root=True)
             if self.best_move_this_iteration:
                 self.best_move = self.best_move_this_iteration
+                self.best_move_evaluation = self.best_move_evaluation_this_iteration
             start = ["a", "b", "c", "d", "e", "f", "g", "h"][self.best_move.get_starting_square() % 8] + str(8 - (self.best_move.get_starting_square() // 8))
             target = ["a", "b", "c", "d", "e", "f", "g", "h"][self.best_move.get_target_square() % 8] + str(8 - (self.best_move.get_target_square() // 8))
             print(depth, alpha, start + target)
@@ -62,5 +65,6 @@ class SearchFunction:
                 alpha = evaluation
                 if is_root and not time.time() - self.start_time >= self.time_limit:
                     self.best_move_this_iteration = move
+                    self.best_move_evaluation_this_iteration = alpha
 
         return alpha

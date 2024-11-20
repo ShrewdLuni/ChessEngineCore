@@ -41,7 +41,7 @@ class Engine:
         alpha = self.search_function.iterative_deepening(15, 2)
         best_move = self.search_function.best_move
         self.board.make_move(best_move.get_starting_square(), best_move.get_target_square(), best_move.get_move_flag())
-        return best_move
+        return {"move": best_move, "evaluation": self.search_function.best_move_evaluation}
 
     def get_legal_moves(self):
         moves = self.move_generator.generate_legal_moves()
