@@ -8,6 +8,5 @@ def main():
         command = input()
         engine.receive_command(command)
 
-
 if __name__ == "__main__":
     main()

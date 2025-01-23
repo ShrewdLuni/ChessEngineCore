@@ -1,4 +1,5 @@
 import time
+import os
 
 from ChessEngine.engine import Engine
 
@@ -25,7 +26,9 @@ class EngineUCI:
         elif "stop" in message:
             print("stop")  # todo
         elif "quit" in message:
-            print("quit")  # todo
+            quit()
+        elif message in ["cls", "clear"]:
+            os.system('cls' if os.name == 'nt' else 'clear')
         else:
             print("Unknown command.")
 
@@ -43,7 +46,8 @@ class EngineUCI:
                 self.engine.make_move(start, target)
 
     def process_go_command(self, message):
-        move = self.engine.get_best_move()
+        move = self.engine.get_best_move()["move"]
+
         start = "abcdefgh"[move.get_starting_square() % 8] + str(8 - (move.get_starting_square() // 8))
         target = "abcdefgh"[move.get_target_square() % 8] + str(8 - (move.get_target_square() // 8))
         print(f"bestmove {start + target}")
