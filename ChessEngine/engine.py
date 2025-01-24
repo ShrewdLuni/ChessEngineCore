@@ -37,8 +37,8 @@ class Engine:
         self.board.make_move(random_move.get_starting_square(), random_move.get_target_square(), random_move.get_move_flag())
         return random_move
 
-    def get_best_move(self):
-        alpha = self.search_function.iterative_deepening(15, 2)
+    def get_best_move(self, search_time = 2.0):
+        alpha = self.search_function.iterative_deepening(15, search_time)
         best_move = self.search_function.best_move
         self.board.make_move(best_move.get_starting_square(), best_move.get_target_square(), best_move.get_move_flag())
         return {"move": best_move, "evaluation": self.search_function.best_move_evaluation}

@@ -46,7 +46,12 @@ class EngineUCI:
                 self.engine.make_move(start, target)
 
     def process_go_command(self, message):
-        move = self.engine.get_best_move()["move"]
+        elements = message.split(" ")
+        time = 2.0 
+        print(elements)
+        if len(elements) > 1:
+            time = float(elements[1])
+        move = self.engine.get_best_move(search_time=time)["move"]
 
         start = "abcdefgh"[move.get_starting_square() % 8] + str(8 - (move.get_starting_square() // 8))
         target = "abcdefgh"[move.get_target_square() % 8] + str(8 - (move.get_target_square() // 8))
