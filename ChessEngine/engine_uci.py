@@ -37,6 +37,9 @@ class EngineUCI:
             fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
         elif "fen" in message:
             fen = message.split("fen", 1)[1].strip().split("moves", 1)[0].strip()
+        else:
+            print("Invalid position")
+            return
         self.engine.board.fen_to_board(fen)
         if "moves" in message:
             moves = message.split("moves", 1)[1].strip().split(" ")

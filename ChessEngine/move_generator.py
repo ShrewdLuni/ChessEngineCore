@@ -21,7 +21,9 @@ class MoveGenerator:
         color = self.friendly_color
         for move in moves:
             self.board.make_move(move.get_starting_square(), move.get_target_square(), move.get_move_flag())
-            king_position = next(i for i in range(64) if self.board.square[i] == piece.KING | color)
+            king_position = next((i for i in range(64) if self.board.square[i] == piece.KING | color), -1)
+            if king_position == -1:
+                return []
             opponent_responses = self.generate_moves()
             if move.get_move_flag() == 2:
                 castle_index = self.precomputed_data.castling_data[0].index(move.get_target_square())

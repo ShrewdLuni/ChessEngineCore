@@ -7,7 +7,9 @@ class BoardUtility:
         self.move_generator = move_generator
 
     def is_check(self, color):
-        king_position = next(i for i in range(64) if self.board.square[i] == piece.KING | color)
+        king_position = next((i for i in range(64) if self.board.square[i] == piece.KING | color), [])
+        if king_position == -1:
+            return False
         self.board.color_to_move = "w" if self.board.color_to_move == "b" else "b"
         opponent_responses = self.move_generator.generate_moves()
         self.board.color_to_move = "w" if self.board.color_to_move == "b" else "b"

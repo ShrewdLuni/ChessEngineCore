@@ -39,7 +39,7 @@ class Board:
             castling[2] = 1
         if "q" in fields[2]:
             castling[3] = 1
-
+        self.castling = castling
         if fields[3] != "-":
 
             self.en_passant = (ord(fields[3][0]) - 97) + (8 * (8 - int(fields[3][1])))
@@ -56,7 +56,9 @@ class Board:
         index = 0
         for char in position:
             if char.isdigit():
-                index += int(char)
+                for i in range(int(char)):
+                    self.square[index] = 0
+                    index += 1
             elif char != "/":
                 piece_color = piece.WHITE if char.isupper() else piece.BLACK
                 piece_type = fen_to_piece[char.lower()]
@@ -102,6 +104,7 @@ class Board:
             pieces_position += str(empty)
 
         castling = ''.join([char for char, flag in zip("KQkq", self.castling) if flag == 1])
+        castling = "-" if castling == "" else castling
         en_passant = "-"
         if self.en_passant != -1:
             en_passant = ["a", "b", "c", "d", "e", "f", "g", "h"][self.en_passant % 8] + str(8 - (self.en_passant // 8))
