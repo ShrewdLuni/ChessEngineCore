@@ -49,6 +49,9 @@ class Engine:
             self.board.is_checkmate = self.board_utility.is_check(piece.WHITE if self.board.color_to_move == "w" else piece.BLACK)
         return moves
 
+    def get_current_evaluation(self):
+        return self.evaluation.evaluate()
+
     def move_generation_test(self, depth, is_root=False):
         if is_root:
             self.move_results = {}
