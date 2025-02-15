@@ -30,9 +30,13 @@ class SearchFunction:
             if self.best_move_this_iteration:
                 self.best_move = self.best_move_this_iteration
                 self.best_move_evaluation = self.best_move_evaluation_this_iteration
-            start = ["a", "b", "c", "d", "e", "f", "g", "h"][self.best_move.get_starting_square() % 8] + str(8 - (self.best_move.get_starting_square() // 8))
-            target = ["a", "b", "c", "d", "e", "f", "g", "h"][self.best_move.get_target_square() % 8] + str(8 - (self.best_move.get_target_square() // 8))
-            print(depth, alpha, start + target)
+            if self.board.is_checkmate:
+                print("Check for", self.board.color_to_move)
+                break
+            else:
+                start = ["a", "b", "c", "d", "e", "f", "g", "h"][self.best_move.get_starting_square() % 8] + str(8 - (self.best_move.get_starting_square() // 8))
+                target = ["a", "b", "c", "d", "e", "f", "g", "h"][self.best_move.get_target_square() % 8] + str(8 - (self.best_move.get_target_square() // 8))
+                print(depth, alpha, start + target)
 
         return self.best_move
 
@@ -49,6 +53,8 @@ class SearchFunction:
 
         if len(moves) == 0:
             if self.board_utility.is_check(piece.WHITE if self.board.color_to_move == "w" else piece.BLACK):
+                if is_root:
+                    self.board.is_checkmate = True
                 return -100000
             return 0
 

@@ -25,6 +25,7 @@ class Board:
         self.is_checkmate = False
 
     def fen_to_board(self, fen_string):
+        self.is_checkmate = False
         fields = fen_string.split(" ")
         position = fields[0]
         self.color_to_move = fields[1]
