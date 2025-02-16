@@ -20,7 +20,7 @@ class Engine:
         self.move_results = {}
 
     def new_game(self):
-        pass#to-do
+        self.set_position("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
     def set_position(self, fen):
         self.board.fen_to_board(fen)
