@@ -25,6 +25,12 @@ class Engine:
     def set_position(self, fen):
         self.board.fen_to_board(fen)
 
+    def get_fen(self):
+        return self.board.fen_from_board()
+
+    def is_checkmate(self):
+        return self.board.is_checkmate
+
     def make_move(self, starting_square, target_square, flag=0):
         self.board.make_move(starting_square, target_square, flag)
 
