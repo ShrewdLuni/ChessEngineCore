@@ -14,7 +14,6 @@
 - ### [Engine Structure](#Engine-Structure)
 - ### [UCI Engine Usage](#UCI-Usage-Guide)
 - ### [Python Engine API Usage](#engine-api-usage-guide)
-- ### [In Code Engine Usage](#engine-class-usage-guide)
 
 # Engine Structure
 
