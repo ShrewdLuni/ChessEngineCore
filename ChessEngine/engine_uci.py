@@ -51,7 +51,6 @@ class EngineUCI:
     def process_go_command(self, message):
         elements = message.split(" ")
         time = 2.0 
-        print(elements)
         if len(elements) > 1:
             time = float(elements[1])
         move = self.engine.get_best_move(search_time=time)["move"]

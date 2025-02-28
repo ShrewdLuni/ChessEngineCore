@@ -22,7 +22,7 @@ class SearchFunction:
         self.time_limit = time_limit
         self.start_time = time.time()
         self.best_move_this_iteration = None
-        print("---------")
+        # print("---------")
         for depth in range(1, max_depth + 1):
             if time.time() - self.start_time >= self.time_limit:
                 break
@@ -31,12 +31,12 @@ class SearchFunction:
                 self.best_move = self.best_move_this_iteration
                 self.best_move_evaluation = self.best_move_evaluation_this_iteration
             if self.board.is_checkmate:
-                print("Check for", self.board.color_to_move)
+                # print("Check for", self.board.color_to_move)
                 break
             else:
                 start = ["a", "b", "c", "d", "e", "f", "g", "h"][self.best_move.get_starting_square() % 8] + str(8 - (self.best_move.get_starting_square() // 8))
                 target = ["a", "b", "c", "d", "e", "f", "g", "h"][self.best_move.get_target_square() % 8] + str(8 - (self.best_move.get_target_square() // 8))
-                print(depth, alpha, start + target)
+                # print(depth, alpha, start + target)
 
         return self.best_move
 
