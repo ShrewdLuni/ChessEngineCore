@@ -1,7 +1,7 @@
 import time
 import os
 
-from ChessEngine.engine import Engine
+from .engine import Engine
 
 
 class EngineUCI:

@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="PackageName",
+    name="ShrewdChess",
     version="0.1",
-    packages=find_packages(),
+    packages=["ChessEngine"],
     install_requires=[],
 )

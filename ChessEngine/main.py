@@ -1,4 +1,4 @@
-from ChessEngine.engine_uci import EngineUCI
+from .engine_uci import EngineUCI
 
 def main():
     engine = EngineUCI()

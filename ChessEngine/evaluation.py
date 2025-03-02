@@ -1,5 +1,5 @@
-from ChessEngine import piece
-from ChessEngine import piece_square_table
+from . import piece
+from . import piece_square_table
 
 
 class Evaluation:

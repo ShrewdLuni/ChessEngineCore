@@ -1,4 +1,4 @@
-from ChessEngine import piece
+from . import piece
 
 pawns = [
      0,   0,   0,   0,   0,   0,   0,   0,

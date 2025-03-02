@@ -1,12 +1,12 @@
 import random
 
-from ChessEngine import piece
-from ChessEngine.board import Board
-from ChessEngine.move_generator import MoveGenerator
-from ChessEngine.precomputed_move_data import PrecomputedMoveData
-from ChessEngine.evaluation import Evaluation
-from ChessEngine.search_function import SearchFunction
-from ChessEngine.board_utility import BoardUtility
+from . import piece
+from .board import Board
+from .move_generator import MoveGenerator
+from .precomputed_move_data import PrecomputedMoveData
+from .evaluation import Evaluation
+from .search_function import SearchFunction
+from .board_utility import BoardUtility
 
 
 class Engine:

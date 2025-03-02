@@ -1,6 +1,6 @@
-from ChessEngine.move import Move
-from ChessEngine import move_flags
-from ChessEngine import piece
+from .move import Move
+from . import move_flags
+from . import piece
 
 
 class MoveGenerator:

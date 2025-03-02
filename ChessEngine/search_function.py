@@ -1,6 +1,6 @@
 import time
 
-from ChessEngine import piece
+from . import piece
 
 
 class SearchFunction:

@@ -1,4 +1,4 @@
-from ChessEngine import piece
+from . import piece
 
 
 class PrecomputedMoveData:
