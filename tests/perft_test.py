@@ -2,6 +2,9 @@ import pytest
 
 from ChessEngine import Engine
 
+@pytest.fixture
+def engine():
+    return Engine()
 
 @pytest.mark.parametrize("position,depth,expected", [
     ("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 1, 20),
@@ -15,7 +18,7 @@ from ChessEngine import Engine
     ("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1", 3, 97862),
     ("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1", 4, 4085603),
 ])
-def test_perfit(position: str, depth: int, expected: int):
+def test_perfit(engine: Engine, position: str, depth: int, expected: int):
     engine = Engine()
     engine.set_position(position)
     result = engine.move_generation_test(depth, True)
